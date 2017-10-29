@@ -22,6 +22,12 @@ To install the templates package open a terminal and run:
     dotnet new -i "AspNetCore.WebApi.Templates::*"
     ```
 
+Tto set back your dotnet new list to "factory defaults" use this command:
+
+    ```
+    dotnet new --debug:reinit
+    ```
+
 ## Usage
 
 To install templates in an ASP.NET Core Web API project, open a terminal at the project root and run:
@@ -131,15 +137,29 @@ Follow these step to re-create the sample from scratch.
 
     - You will see a **Templates** folder appear in the project containing a **ControllerGenerator** folder with razor template files that you can customize.
 
-9. Add a Values controler with read/write actions.
+9. Add a Values controler with read/write actions using Visual Studio.
     - Right-click the **Controllers** folder and select **Add Controller**.
     - From the dialog select _API Controller with read/write actions_ and name it **ValuesController**.
         + Press **Ctrl+F5** to run the Web API. You should see values JSON displayed in the browser.
         + You can use a REST client such as Postman to submit POST, PUT and DELETE requests.
+10. To add a controller from a terminal without using Visual Studio you can execute the `dotnet aspnet-codegenerator controller` command.
+    - Pass `--help` for a list of options.
+    - To add a Values controller (`-f` overwrites previous file):
 
-10. Add a Products API controller with actions using Entity Framework.
-    - Select _Product_ for the model class and _NorthwindSlimContext_ for the data context class.
-    - Use Postman to issue requests to the Products controller.
+    ```
+    dotnet aspnet-codegenerator controller -name Values -api -actions -outDir Controllers -f
+    ```
+
+11. Add a Products API controller with actions using Entity Framework.
+    - You can use Visual Studio to add the controller, selecting _Product_ for the model class and _NorthwindSlimContext_ for the data context class.
+
+    - To generate the Products controller from a terminal run:
+
+    ```
+    dotnet aspnet-codegenerator controller -name ProductsController -api -m Product -dc NorthwindSlimContext -outDir Controllers -f
+    ```
+
+12. Use Postman to issue requests to the Products controller.
 
     ```
     GET: http://localhost:53225/api/products

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>AspNetCore.WebApi.Templates</id>
+        <version>1.0.0-beta</version>
+        <title>ASP.NET Core Web API Templates</title>
+        <description>Customizable Razor templates for ASP.NET Core Web API controllers.</description>
+        <authors>Tony Sneed</authors>
+        <owners>Tony Sneed</owners>
+        <licenseUrl>https://github.com/TrackableEntities/TrackableEntities.Core/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/TrackableEntities/TrackableEntities.Core</projectUrl>
+        <iconUrl>http://trackableentities.github.io/images/tracking.png</iconUrl>
+        <language>en-US</language>
+        <releaseNotes>TBD</releaseNotes>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>aspnetcore web-api templates</tags>
+        <packageTypes>
+            <packageType name="Template" />
+        </packageTypes>
+    </metadata>
+    <files>
+      <file src="content/**" target="" />
+    </files>
+</package>

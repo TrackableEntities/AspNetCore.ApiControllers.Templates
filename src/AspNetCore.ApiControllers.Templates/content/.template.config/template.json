@@ -1,0 +1,25 @@
+{
+  "author": "Tony Sneed",
+  "classifications": [
+    "Web",
+    "WebAPI",
+    "Templates"
+  ],
+  "identity": "AspNetCore.ApiControllers.Templates",
+  "groupIdentity": "AspNetCore.ApiControllers.Templates.ControllerGenerator",
+  "name": "ASP.NET Core Web API Templates",
+  "shortName": "webapi-templates",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "WebApiTemplates",
+  "guids": [],
+  "preferNameDirectory": true,
+  "sources": [
+    {
+      "source": "./Templates/",
+      "target": "./Templates/"
+    }
+  ]
+}

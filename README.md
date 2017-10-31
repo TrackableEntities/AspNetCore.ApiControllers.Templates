@@ -17,12 +17,19 @@ Run and/or re-create the sample:
 ## Installation
 
 To install the templates package open a terminal and run:
+- For the latest _pre-release_ version:
+
+    ```
+    dotnet new -i "AspNetCore.WebApi.Templates::1.0.0-*"
+    ```
+
+- For the latest _stable_ version:
 
     ```
     dotnet new -i "AspNetCore.WebApi.Templates::*"
     ```
 
-Tto set back your dotnet new list to "factory defaults" use this command:
+To set back your dotnet new list to "factory defaults" use this command:
 
     ```
     dotnet new --debug:reinit

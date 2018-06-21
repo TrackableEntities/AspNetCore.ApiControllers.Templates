@@ -90,7 +90,7 @@ namespace @Model.ControllerNamespace
     }
 }
 
-            return CreatedAtAction("Get@(Model.ModelTypeName)", new { id = @(Model.ModelVariable).@primaryKeyName }, @Model.ModelVariable);
+            return CreatedAtAction(nameof(Get@(Model.ModelTypeName)), new { id = @(Model.ModelVariable).@primaryKeyName }, @Model.ModelVariable);
         }
 
         // PUT: @routePrefix/5
@@ -115,7 +115,7 @@ namespace @Model.ControllerNamespace
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!@(Model.ModelTypeName)Exists(id))
+                if (! await @(Model.ModelTypeName)ExistsAsync(id))
                 {
                     return NotFound();
                 }
@@ -146,9 +146,9 @@ namespace @Model.ControllerNamespace
             return NoContent();
         }
 
-        private bool @(Model.ModelTypeName)Exists(@primaryKeyShortTypeName id)
+        private async Task<bool> @(Model.ModelTypeName)ExistsAsync(@primaryKeyShortTypeName id)
         {
-            return _context.@(entitySetName).Any(e => e.@primaryKeyName == id);
+            return await _context.@(entitySetName).AnyAsync(e => e.@primaryKeyName == id);
         }
     }
 }

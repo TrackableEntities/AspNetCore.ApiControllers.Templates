@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>AspNetCore.WebApi.Templates</id>
-        <version>1.0.0-beta</version>
+        <version>1.0.0</version>
         <title>ASP.NET Core Web API Templates</title>
         <description>Customizable Razor templates for ASP.NET Core Web API controllers.</description>
         <authors>Tony Sneed</authors>
@@ -11,7 +11,7 @@
         <projectUrl>https://github.com/TrackableEntities/AspNetCore.ApiControllers.Templates</projectUrl>
         <iconUrl>https://user-images.githubusercontent.com/2836367/32149354-08e8d396-bcd1-11e7-8403-8b370db5439a.png</iconUrl>
         <language>en-US</language>
-        <releaseNotes>See https://github.com/TrackableEntities/AspNetCore.ApiControllers.Templates/releases/tag/v1.0.0-beta1</releaseNotes>
+        <releaseNotes>See https://github.com/TrackableEntities/AspNetCore.ApiControllers.Templates/releases/tag/v1.0.0</releaseNotes>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>aspnetcore web-api templates</tags>
         <packageTypes>

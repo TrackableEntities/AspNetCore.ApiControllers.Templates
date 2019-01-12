@@ -1,4 +1,5 @@
 ﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 @{string modelName = (Model.ClassName.EndsWith("Controller") ? Model.ClassName.Substring(0, Model.ClassName.Length - 10) : Model.ClassName);}
@@ -9,19 +10,20 @@ namespace @Model.NamespaceName
 }
     [Produces("application/json")]
     [Route("@routePrefix")]
-    public class @Model.ClassName : Controller
+    [ApiController]
+    public class @Model.ClassName : ControllerBase
     {
         // GET: api/@modelName
         [HttpGet]
-        public IActionResult Get()
+        public ActionResult<IEnumerable<string>> Get()
         {
             var result = new [] { "value1", "value2" };
             return Ok(result);
         }
 
         // GET: api/@modelName/5
-        [HttpGet("{id}", Name = "Get")]
-        public IActionResult Get(int id)
+        [HttpGet("{id}", Name = nameof(Get))]
+        public ActionResult<string> Get(int id)
         {
             var result = "value";
             return Ok(result);
@@ -29,19 +31,19 @@ namespace @Model.NamespaceName
         
         // POST: api/@modelName
         [HttpPost]
-        public IActionResult Post([FromBody]string value)
+        public ActionResult<string> Post([FromBody] string value)
         {
-            return CreatedAtAction("Get", new { id = 5 }, value);
+            return CreatedAtAction(nameof(Get), new { id = 5 }, value);
         }
         
         // PUT: api/@modelName/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]string value)
+        public ActionResult<string> Put(int id, [FromBody] string value)
         {
             return Ok(value);
         }
         
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/@modelName/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

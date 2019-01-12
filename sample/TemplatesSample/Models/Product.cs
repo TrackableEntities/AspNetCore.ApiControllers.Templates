@@ -14,10 +14,10 @@ namespace TemplatesSample.Models
         public string ProductName { get; set; }
         public int? CategoryId { get; set; }
         public decimal? UnitPrice { get; set; }
-        public bool? Discontinued { get; set; }
+        public bool Discontinued { get; set; }
         public byte[] RowVersion { get; set; }
 
-        public Category Category { get; set; }
-        public ICollection<OrderDetail> OrderDetail { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }
 }

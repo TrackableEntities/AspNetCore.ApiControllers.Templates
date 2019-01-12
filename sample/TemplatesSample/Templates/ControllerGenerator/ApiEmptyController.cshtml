@@ -7,9 +7,9 @@ namespace @Model.NamespaceName
 @{
     string routePrefix = "api/" + modelName;
 }
-    [Produces("application/json")]
     [Route("@routePrefix")]
-    public class @Model.ClassName : Controller
+    [ApiController]
+    public class @Model.ClassName : ControllerBase
     {
     }
 }

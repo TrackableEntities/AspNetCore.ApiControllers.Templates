@@ -6,6 +6,15 @@ namespace TemplatesSample.Models
 {
     public partial class NorthwindSlimContext : DbContext
     {
+        public NorthwindSlimContext()
+        {
+        }
+
+        public NorthwindSlimContext(DbContextOptions<NorthwindSlimContext> options)
+            : base(options)
+        {
+        }
+
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<CustomerSetting> CustomerSetting { get; set; }
@@ -16,17 +25,10 @@ namespace TemplatesSample.Models
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Territory> Territory { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NorthwindSlim; Integrated Security=True");
-//            }
-//        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.Property(e => e.CategoryName)
@@ -37,7 +39,7 @@ namespace TemplatesSample.Models
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.Property(e => e.CustomerId)
-                    .HasColumnType("nchar(5)")
+                    .HasMaxLength(5)
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.City).HasMaxLength(15);
@@ -53,10 +55,11 @@ namespace TemplatesSample.Models
 
             modelBuilder.Entity<CustomerSetting>(entity =>
             {
-                entity.HasKey(e => e.CustomerId);
+                entity.HasKey(e => e.CustomerId)
+                    .HasName("PK_dbo.CustomerSetting");
 
                 entity.Property(e => e.CustomerId)
-                    .HasColumnType("nchar(5)")
+                    .HasMaxLength(5)
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Setting)
@@ -91,7 +94,8 @@ namespace TemplatesSample.Models
 
             modelBuilder.Entity<EmployeeTerritories>(entity =>
             {
-                entity.HasKey(e => new { e.EmployeeId, e.TerritoryId });
+                entity.HasKey(e => new { e.EmployeeId, e.TerritoryId })
+                    .HasName("PK_dbo.EmployeeTerritories");
 
                 entity.Property(e => e.TerritoryId).HasMaxLength(20);
 
@@ -108,7 +112,7 @@ namespace TemplatesSample.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.Property(e => e.CustomerId).HasColumnType("nchar(5)");
+                entity.Property(e => e.CustomerId).HasMaxLength(5);
 
                 entity.Property(e => e.Freight)
                     .HasColumnType("money")
@@ -126,13 +130,9 @@ namespace TemplatesSample.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.Property(e => e.Discount).HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.UnitPrice)
-                    .HasColumnType("money")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.UnitPrice).HasColumnType("money");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetail)
@@ -149,8 +149,6 @@ namespace TemplatesSample.Models
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.Discontinued).HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.ProductName)
                     .IsRequired()
                     .HasMaxLength(40);

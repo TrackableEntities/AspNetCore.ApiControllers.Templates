@@ -5,10 +5,10 @@ Customizable Razor templates for ASP.NET Core Web API controllers
 ## Prerequisites
 
 Install package and add ASP.NET Web API Templates:
-- .NET SDK 2.0 or greater
+- .NET SDK 2.2 or greater
 
 Use the template to generate Web API controllers:
-- Visual Studio 2017
+- Visual Studio 2017 v 15.9.4 or greater
 
 Run and/or re-create the sample:
 - SQL Server LocalDb
@@ -17,22 +17,16 @@ Run and/or re-create the sample:
 ## Installation
 
 To install the templates package open a terminal and run:
-- For the latest _pre-release_ version:
-
-    ```
-    dotnet new -i "AspNetCore.WebApi.Templates::1.0.0-*"
-    ```
-
 - For the latest _stable_ version:
 
     ```
     dotnet new -i "AspNetCore.WebApi.Templates::*"
     ```
 
-To set back your dotnet new list to "factory defaults" use this command:
+To uninstall the templates package open a terminal and run:
 
     ```
-    dotnet new --debug:reinit
+    dotnet new -u "AspNetCore.WebApi.Templates"
     ```
 
 ## Usage
@@ -45,7 +39,7 @@ To install templates in an ASP.NET Core Web API project, open a terminal at the 
 
 A **Templates** folder will be added containing a **ControllerGenerator** folder with Razor templates that can be customized to generate Web API controllers.
 
-> Note: The Razor templates have been adapted from those supplied with Visual Studio and represent best practices for 
+> **Important**: You must explicitly set the **Build Action** of each .cshtml file to `None` in order to build the project. 
 
 You can add Web API controllers using these templates either from Visual Studio or the terminal.
 
@@ -60,28 +54,13 @@ Follow these step to re-create the sample from scratch.
 2. Create a new ASP.NET Core Web API project.
     - Remove ValuesController.cs from the Controllers folder.
 
-3. Add the following NuGet packages:
+3. Add the following NuGet package:
 
     ```
     Microsoft.EntityFrameworkCore.SqlServer
-    Microsoft.EntityFrameworkCore.Tools
-    Microsoft.VisualStudio.Web.CodeGeneration.Design
     ```
 
-4. Add the EF Core command line tools as a .NET CLI tool.
-    - Edit the csproj file to add Microsoft.EntityFrameworkCore.Tools.DotNet
-      as a DotNetCliToolReference, as in the following snippet.
-
-    ```xml
-    <ItemGroup>
-        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-        <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
-    </ItemGroup>
-    ```
-
-    - Then open a termina and run `dotnet restore`.
-
-5. Reverse engineer context and entity classes from the NorthwindSlim database.
+4. Reverse engineer context and entity classes from the NorthwindSlim database.
 
     > Note: This sample uses a database-first approach, but you can also use a code-first approach by using EF Core code migrations.
 
@@ -97,13 +76,15 @@ Follow these step to re-create the sample from scratch.
     Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=NorthwindSlim; Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context NorthwindSlimContext -Force
     ```
 
-6. Configure the web app to use the NorthwindSlim database.
+    - If you wish you can remove the `OnConfiguring`method from the generated `NorthwindSlimContext` class.
+
+5. Configure the web app to use the NorthwindSlim database.
 
     - Add a connection string to **appsettings.json**.
 
     ```json
     "ConnectionStrings": {
-        "NorthwindContext": "Data Source=(localdb)\\MSSQLLocalDB;initial catalog=NorthwindSlim;Integrated Security=True; MultipleActiveResultSets=True"
+        "NorthwindSlimContext": "Data Source=(localdb)\\MSSQLLocalDB;initial catalog=NorthwindSlim;Integrated Security=True; MultipleActiveResultSets=True"
     }
     ```
 
@@ -113,29 +94,15 @@ Follow these step to re-create the sample from scratch.
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddMvc()
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             .AddJsonOptions(options =>
                 options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.All);
-        var connectionString = Configuration.GetConnectionString("NorthwindContext");
+        var connectionString = Configuration.GetConnectionString(nameof(NorthwindSlimContext));
         services.AddDbContext<NorthwindSlimContext>(options => options.UseSqlServer(connectionString));
     }
     ```
 
-7. Add a partial `NorthwindSlimContext` class that includes a constructor accepting `DbContextOptions`.
-    - Add the partial class to the **Models** folder and namespace, but name the file with an Ex suffix.
-
-    ```csharp
-    namespace TemplatesSample.Models
-    {
-        public partial class NorthwindSlimContext
-        {
-            public NorthwindSlimContext(DbContextOptions<NorthwindSlimContext> options) : base(options) { }
-        }
-    }
-    ```
-
-    - If you wish you can remove the `OnConfiguring`method from the generated `NorthwindSlimContext` class.
-
-8. If you execute `dotnet new` from a terminal at the project root, you'll see a list of available templates, including **ASP.NET Core Web API Templates**, which you installed earlier.
+6. If you execute `dotnet new` from a terminal at the project root, you'll see a list of available templates, including **ASP.NET Core Web API Templates**, which you installed earlier.
     - Add custom templates to the project by running:
 
     ```
@@ -143,21 +110,39 @@ Follow these step to re-create the sample from scratch.
     ```
 
     - You will see a **Templates** folder appear in the project containing a **ControllerGenerator** folder with razor template files that you can customize.
+    - Open the Templates/ControllerGenerator folder and view properties for the first .cshtml file in the list, then set the **Build Action** of each .cshtml file to `None`.
 
-9. Add a Values controler with read/write actions using Visual Studio.
+7. Add a Values controler with read/write actions using Visual Studio.
     - Right-click the **Controllers** folder and select **Add Controller**.
     - From the dialog select _API Controller with read/write actions_ and name it **ValuesController**.
         + Press **Ctrl+F5** to run the Web API. You should see values JSON displayed in the browser.
         + You can use a REST client such as Postman to submit POST, PUT and DELETE requests.
-10. To add a controller from a terminal without using Visual Studio you can execute the `dotnet aspnet-codegenerator controller` command.
-    - Pass `--help` for a list of options.
+    ```
+    GET: http://localhost:53225/api/values
+    GET: http://localhost:53225/api/values/5
+    POST: http://localhost:53225/api/values
+        - JSON Body: "value3"
+    PUT: http://localhost:53225/api/values/5
+        - JSON Body: "value4" 
+    DELETE: http://localhost:53225/api/values/5
+    ```
+8.  To add a controller from a terminal without using Visual Studio you can execute the `dotnet aspnet-codegenerator controller` command.
+    - First add the following to the .csproj file (find latest version on nuget.org):
+
+    ```xml
+    <ItemGroup>
+        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+    </ItemGroup>
+    ```
+    - Then execute `dotnet restore` from the command line.
+    - Run `dotnet aspnet-codegenerator --help` for a list of options.
     - To add a Values controller (`-f` overwrites previous file):
 
     ```
     dotnet aspnet-codegenerator controller -name Values -api -actions -outDir Controllers -f
     ```
 
-11. Add a Products API controller with actions using Entity Framework.
+9.  Add a Products API controller with actions using Entity Framework.
     - You can use Visual Studio to add the controller, selecting _Product_ for the model class and _NorthwindSlimContext_ for the data context class.
 
     - To generate the Products controller from a terminal run:
@@ -166,7 +151,7 @@ Follow these step to re-create the sample from scratch.
     dotnet aspnet-codegenerator controller -name ProductsController -api -m Product -dc NorthwindSlimContext -outDir Controllers -f
     ```
 
-12. Use Postman to issue requests to the Products controller.
+10. Use Postman to issue requests to the Products controller.
 
     ```
     GET: http://localhost:53225/api/products
@@ -181,11 +166,10 @@ Follow these step to re-create the sample from scratch.
 
     ```json
     {
-    "productName": "Chocolato",
-    "categoryId": 1,
-    "unitPrice": 23,
-    "discontinued": false,
-    "rowVersion": "AAAAAAAAD6E="
+        "productName": "Chocolato",
+        "categoryId": 1,
+        "unitPrice": 23,
+        "discontinued": false
     }
     ```
 
@@ -218,9 +202,6 @@ Follow these step to re-create the sample from scratch.
     {
         "productId": 1078,
         "productName": "Chocolato - Updated",
-        "categoryId": 1,
-        "unitPrice": 23,
-        "discontinued": false,
         "rowVersion": "AAAAAAAAF3E="
     }
     ```

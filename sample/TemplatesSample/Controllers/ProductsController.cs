@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,9 +7,9 @@ using TemplatesSample.Models;
 
 namespace TemplatesSample.Controllers
 {
-    [Produces("application/json")]
     [Route("api/Products")]
-    public class ProductsController : Controller
+    [ApiController]
+    public class ProductsController : ControllerBase
     {
         private readonly NorthwindSlimContext _context;
 
@@ -19,7 +20,7 @@ namespace TemplatesSample.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<IActionResult> GetProduct()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
             var product = await _context.Product.ToListAsync();
             return Ok(product);
@@ -27,13 +28,8 @@ namespace TemplatesSample.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct([FromRoute] int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var product = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
         
             if (product == null)
@@ -46,28 +42,18 @@ namespace TemplatesSample.Controllers
 
         // POST: api/Products
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromBody] Product product)
+        public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             _context.Entry(product).State = EntityState.Added;
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.ProductId }, product);
         }
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] Product product)
+        public async Task<ActionResult<Product>> PutProduct(int id, Product product)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             if (id != product.ProductId)
             {
                 return BadRequest();
@@ -93,13 +79,8 @@ namespace TemplatesSample.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var product = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {

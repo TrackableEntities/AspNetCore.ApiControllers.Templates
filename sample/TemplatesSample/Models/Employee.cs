@@ -18,6 +18,6 @@ namespace TemplatesSample.Models
         public string City { get; set; }
         public string Country { get; set; }
 
-        public ICollection<EmployeeTerritories> EmployeeTerritories { get; set; }
+        public virtual ICollection<EmployeeTerritories> EmployeeTerritories { get; set; }
     }
 }

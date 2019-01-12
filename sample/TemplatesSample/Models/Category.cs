@@ -13,6 +13,6 @@ namespace TemplatesSample.Models
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
 
-        public ICollection<Product> Product { get; set; }
+        public virtual ICollection<Product> Product { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,9 +22,10 @@ namespace TemplatesSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                     options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.All);
-            var connectionString = Configuration.GetConnectionString("NorthwindContext");
+            var connectionString = Configuration.GetConnectionString(nameof(NorthwindSlimContext));
             services.AddDbContext<NorthwindSlimContext>(options => options.UseSqlServer(connectionString));
         }
 

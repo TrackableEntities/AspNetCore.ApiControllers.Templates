@@ -7,7 +7,7 @@
         <description>Customizable Razor templates for ASP.NET Core Web API controllers.</description>
         <authors>Tony Sneed</authors>
         <owners>Tony Sneed</owners>
-        <licenseUrl>https://github.com/TrackableEntities/AspNetCore.ApiControllers.Templates/blob/master/LICENSE</licenseUrl>
+        <license type="expression">MIT</license>
         <projectUrl>https://github.com/TrackableEntities/AspNetCore.ApiControllers.Templates</projectUrl>
         <iconUrl>https://user-images.githubusercontent.com/2836367/32149354-08e8d396-bcd1-11e7-8403-8b370db5439a.png</iconUrl>
         <language>en-US</language>

@@ -25,17 +25,17 @@ To install the templates package open a terminal and run:
 
 To uninstall the templates package open a terminal and run:
 
-    ```
-    dotnet new -u "AspNetCore.WebApi.Templates"
-    ```
+```
+dotnet new -u "AspNetCore.WebApi.Templates"
+```
 
 ## Usage
 
 To install templates in an ASP.NET Core Web API project, open a terminal at the project root and run:
 
-    ```
-    dotnet new webapi-templates
-    ```
+```
+dotnet new webapi-templates
+```
 
 A **Templates** folder will be added containing a **ControllerGenerator** folder with Razor templates that can be customized to generate Web API controllers.
 

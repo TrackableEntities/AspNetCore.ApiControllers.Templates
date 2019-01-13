@@ -26,7 +26,7 @@ To install the templates package open a terminal and run:
 To uninstall the templates package open a terminal and run:
 
 ```
-dotnet new -u "AspNetCore.WebApi.Templates"
+dotnet -u "AspNetCore.WebApi.Templates"
 ```
 
 ## Usage
